@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Interfaces.Repository;
@@ -31,17 +30,20 @@ namespace WebApiProductsProviders.Business.Services
             return await _providerRepository.FindById(id, address, product);
         }
 
-        public async Task Insert(Provider provider)
+        public async Task<Address> FindAddressById(Guid id)
         {
-            if (!ExecuteValidation(new ProviderValidation(), provider) || !ExecuteValidation(new AddressValidation(), provider.Address)) return;
+            return await _addressRepository.FindById(id);
+        }
 
-            if (_providerRepository.Search(p => p.DocumentNumber == provider.DocumentNumber).Result.Any())
-            {
-                Notify("CNPJ já cadastrado");
-                return;
-            }
+        public async Task<Provider> Insert(Provider provider)
+        {
+            provider.DocumentNumber = CpfClear(provider.DocumentNumber);
+            if (!ExecuteValidation(new ProviderValidation(), provider) || !ExecuteValidation(new AddressValidation(), provider.Address)) return null;
+
+            if (await CpfAlreadyRegistred(provider)) return null;
 
             await _providerRepository.Insert(provider);
+            return await _providerRepository.FindById(provider.Id);
         }
 
         public async Task Remove(Guid id)
@@ -49,25 +51,37 @@ namespace WebApiProductsProviders.Business.Services
             await _providerRepository.Remove(id);
         }
 
-        public async Task Update(Provider provider)
+        public async Task<Provider> Update(Provider provider)
         {
-            if (!ExecuteValidation(new ProviderValidation(), provider)) return;
+            provider.DocumentNumber = CpfClear(provider.DocumentNumber);
+            if (!ExecuteValidation(new ProviderValidation(), provider)) return null;
 
-            if (_providerRepository.Search(p => p.DocumentNumber == provider.DocumentNumber && p.Id != provider.Id).Result.Any())
-            {
-                Notify("CNPJ já cadastrado");
-                return;
-            }
+            if (await CpfAlreadyRegistred(provider)) return null;
 
             await _providerRepository.Update(provider);
+            return await _providerRepository.FindById(provider.Id);
         }
 
-        public async Task UpdateAddress(Address address)
+        public async Task<Address> UpdateAddress(Address address)
         {
-            if (!ExecuteValidation(new AddressValidation(), address)) return;
-
+            if (!ExecuteValidation(new AddressValidation(), address)) return null;
 
             await _addressRepository.Update(address);
+            return await _addressRepository.FindById(address.Id);
+        }
+
+        private async Task<bool> CpfAlreadyRegistred(Provider provider)
+        {
+            var providers = await _providerRepository.Search(p => p.DocumentNumber.Equals(provider.DocumentNumber) && !p.Id.Equals(provider.Id));
+            if (providers.Count == 0) return false;
+
+            Notify("Cpf/Cnpj já cadastrado");
+            return true;
+        }
+
+        private static string CpfClear(string cpf)
+        {
+            return cpf.Replace("-", "").Replace("/", "").Replace(".", "").Trim();
         }
 
         public void Dispose()

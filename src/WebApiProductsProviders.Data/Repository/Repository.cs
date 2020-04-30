@@ -58,7 +58,7 @@ namespace WebApiProductsProviders.Data.Repository
             }
             catch (DbUpdateException)
             {
-                throw new IntegrityException("Não foi possível exluir pois existem itens associados a este item.");
+                throw new IntegrityException("Não foi possível exluir:");
             }
         }
 

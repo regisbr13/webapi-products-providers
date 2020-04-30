@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using WebApiProductsProviders.Data.Context;
+using WebApiProductsProviders.App.Configurations;
 
 namespace WebApiProductsProviders.App
 {
@@ -27,9 +19,8 @@ namespace WebApiProductsProviders.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            services.AddDbContext<MyContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("WebApiProductsProviders.App")));
-            services.AddScoped<MyContext>();
+            services.AddDatabaseConfig(Configuration);
+            services.AddDependeces();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

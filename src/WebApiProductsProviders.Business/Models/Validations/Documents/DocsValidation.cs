@@ -54,7 +54,7 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
         }
     }
 
-    public class CnpjValidation
+    public static class CnpjValidation
     {
         public const int TamanhoCnpj = 14;
 
@@ -163,7 +163,7 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
         }
     }
 
-    public class Utils
+    public static class Utils
     {
         public static string OnlyNumbers(string valor)
         {
