@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebApiProductsProviders.Business.Models;
+
+namespace WebApiProductsProviders.Business.Interfaces.Services
+{
+    public interface IProductService : IDisposable
+    {
+        Task<List<Product>> FindAll(bool provider, bool category);
+        Task<Product> FindById(Guid id, bool provider, bool category);
+        Task<List<Product>> FindByProvider(Guid providerId);
+        Task Insert(Product product);
+        Task Update(Product product);
+        Task Remove(Guid id);
+    }
+}
