@@ -28,23 +28,25 @@ namespace WebApiProductsProviders.Business.Services
             return await _categoryRepository.FindById(id, products);
         }
 
-        public async Task Insert(Category category)
+        public async Task<Category> Insert(Category category)
         {
-            if (!ExecuteValidation(new CategoryValidation(), category)) return;
+            if (!ExecuteValidation(new CategoryValidation(), category)) return null;
 
             await _categoryRepository.Insert(category);
+            return await _categoryRepository.FindById(category.Id);
+        }
+
+        public async Task<Category> Update(Category category)
+        {
+            if (!ExecuteValidation(new CategoryValidation(), category)) return null;
+
+            await _categoryRepository.Update(category);
+            return await _categoryRepository.FindById(category.Id);
         }
 
         public async Task Remove(Guid id)
         {
             await _categoryRepository.Remove(id);
-        }
-
-        public async Task Update(Category category)
-        {
-            if (!ExecuteValidation(new CategoryValidation(), category)) return;
-
-            await _categoryRepository.Update(category);
         }
 
         public void Dispose()

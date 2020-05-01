@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Linq;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Notifications;
@@ -47,6 +48,12 @@ namespace WebApiProductsProviders.App.Controllers
         protected void NotifyError(string msg)
         {
             _notifier.Handle(new Notification(msg));
+        }
+
+        protected ActionResult NotifyException(Exception ex, string customMessage)
+        {
+            NotifyError($"{ex.Message} {customMessage}");
+            return CustomResponse();
         }
 
         private bool ValidOperation()

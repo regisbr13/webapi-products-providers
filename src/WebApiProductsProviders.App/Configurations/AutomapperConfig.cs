@@ -11,6 +11,7 @@ namespace WebApiProductsProviders.App.Configurations
             CreateMap<Provider, ProviderDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Address, AddressDTO>().ReverseMap();
+            CreateMap<Category, CategoryDTO>().ReverseMap();
         }
     }
 }

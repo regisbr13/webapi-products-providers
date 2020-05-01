@@ -9,8 +9,8 @@ namespace WebApiProductsProviders.Business.Interfaces.Services
     {
         Task<List<Category>> FindAll();
         Task<Category> FindById(Guid id, bool products);
-        Task Insert(Category category);
-        Task Update(Category category);
+        Task<Category> Insert(Category category);
+        Task<Category> Update(Category category);
         Task Remove(Guid id);
     }
 }

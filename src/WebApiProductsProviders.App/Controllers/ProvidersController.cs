@@ -98,7 +98,7 @@ namespace WebApiProductsProviders.App.Controllers
             }
             catch (IntegrityException exception)
             {
-                return NotifyException(exception);
+                return NotifyException(exception, "Exitem produtos associados a este fornecedor");
             }
         }
 
@@ -120,12 +120,6 @@ namespace WebApiProductsProviders.App.Controllers
             var address = await _providerService.UpdateAddress(_mapper.Map<Address>(addressDTO));
             return CustomResponse(_mapper.Map<ProviderDTO>(address));
 
-        }
-
-        private ActionResult NotifyException(Exception ex)
-        {
-            NotifyError($"{ex.Message} existem produtos pertecentes a este fornecedor");
-            return CustomResponse();
         }
     }
 }
