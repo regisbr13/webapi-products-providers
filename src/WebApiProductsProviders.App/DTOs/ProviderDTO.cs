@@ -19,10 +19,14 @@ namespace WebApiProductsProviders.App.DTOs
         public string DocumentNumber { get; set; }
 
         [Display(Name = "Tipo")]
+        [Range(1, 2, ErrorMessage = "Entre com {1} para Pessoa Física e {2} para Pessoa Jurídica")]
         public int ProviderType { get; set; }
 
         [Display(Name = "Ativo?")]
         public bool Active { get; set; }
+
+        [Display(Name = "Endereço")]
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public AddressDTO Address { get; set; }
         public List<ProductDTO> Products { get; set; }
     }

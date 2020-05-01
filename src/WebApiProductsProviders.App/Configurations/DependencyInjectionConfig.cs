@@ -18,6 +18,7 @@ namespace WebApiProductsProviders.App.Configurations
 
             services.AddScoped<IProviderRepository, ProviderRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             services.AddScoped<IProviderService, ProviderService>();

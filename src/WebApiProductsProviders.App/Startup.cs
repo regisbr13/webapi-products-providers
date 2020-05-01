@@ -18,9 +18,10 @@ namespace WebApiProductsProviders.App
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddDatabaseConfig(Configuration);
             services.AddDependeces();
+            services.AddControllers()
+              .ConfigureApiBehaviorOptions(opt => { opt.SuppressModelStateInvalidFilter = true; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

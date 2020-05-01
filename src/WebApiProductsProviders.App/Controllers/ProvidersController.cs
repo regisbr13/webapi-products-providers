@@ -102,7 +102,7 @@ namespace WebApiProductsProviders.App.Controllers
             }
         }
 
-        [HttpPut("{address/id:guid}")]
+        [HttpPut("address/{id:guid}")]
         public async Task<ActionResult<AddressDTO>> Put(Guid id, AddressDTO addressDTO)
         {
             if (id != addressDTO.Id)

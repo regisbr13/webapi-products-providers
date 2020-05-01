@@ -18,7 +18,6 @@ namespace WebApiProductsProviders.App.DTOs
         public int Number { get; set; }
 
         [Display(Name = "Complemento")]
-        [Required(ErrorMessage = "o campo {0} é obrigatório")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "o campo {0} precisa ter entre {2} e {1} caracteres")]
         public string Complement { get; set; }
 
@@ -28,18 +27,18 @@ namespace WebApiProductsProviders.App.DTOs
         public string Cep { get; set; }
 
         [Display(Name = "Bairro")]
-        [Required(ErrorMessage = "o campo é obrigatório")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "o campo precisa ter entre {2} e {1} caracteres")]
+        [Required(ErrorMessage = "o campo {0} é obrigatório")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "o campo {0} precisa ter entre {2} e {1} caracteres")]
         public string District { get; set; }
 
         [Display(Name = "Cidade")]
-        [Required(ErrorMessage = "o campo é obrigatório")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "o campo precisa ter entre {2} e {1} caracteres")]
+        [Required(ErrorMessage = "o campo {0} é obrigatório")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "o campo {0} precisa ter entre {2} e {1} caracteres")]
         public string City { get; set; }
 
         [Display(Name = "Estado")]
-        [Required(ErrorMessage = "o campo é obrigatório")]
-        [StringLength(2, MinimumLength = 2, ErrorMessage = "o campo precisa ter {2} caracteres")]
+        [Required(ErrorMessage = "o campo {0} é obrigatório")]
+        [StringLength(2, MinimumLength = 2, ErrorMessage = "o campo {0} precisa ter {2} caracteres")]
         public string State { get; set; }
         public Guid ProviderId { get; set; }
     }
