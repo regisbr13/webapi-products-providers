@@ -19,12 +19,6 @@ namespace WebApiProductsProviders.App.DTOs
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        [Display(Name = "Imagem")]
-        public string Image { get; set; }
-
-        [Display(Name = "Escolha uma imagem")]
-        public string ImageUpload { get; set; }
-
         [Display(Name = "Valor")]
         [Required(ErrorMessage = "o campo {0} é obrigatório")]
         [DataType(DataType.Currency)]
@@ -38,14 +32,15 @@ namespace WebApiProductsProviders.App.DTOs
         public bool Active { get; set; }
 
         [Display(Name = "Fornecedor")]
-        //[RegularExpression("^(?!(00000000-0000-0000-0000-000000000000)$)", ErrorMessage = "forneça o Id do {0}")]
         [Required(ErrorMessage = "forneça o Id do {0} required")]
         public string ProviderId { get; set; }
 
         [Display(Name = "Categoria")]
-        //[RegularExpression("^(?!(00000000-0000-0000-0000-000000000000)$)", ErrorMessage = "forneça o Id da {0}")]
         [Required(ErrorMessage = "forneça o Id da {0} required")]
         public string CategoryId { get; set; }
+
+        public string Image { get; set; }
+        public string ImageUpload { get; set; }
         public string Provider { get; set; }
         public string Category { get; set; }
     }

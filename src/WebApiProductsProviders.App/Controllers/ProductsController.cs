@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace WebApiProductsProviders.App.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductDTO>>> Get()
         {
-            var products = _mapper.Map<List<ProductDTO>>(await _productService.FindAll(false, true));
+            var products = _mapper.Map<List<ProductDTO>>(await _productService.FindAll(true, true));
             return (products);
         }
 
