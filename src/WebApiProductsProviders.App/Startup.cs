@@ -20,8 +20,7 @@ namespace WebApiProductsProviders.App
         {
             services.AddDatabaseConfig(Configuration);
             services.AddDependeces();
-            services.AddControllers()
-              .ConfigureApiBehaviorOptions(opt => { opt.SuppressModelStateInvalidFilter = true; });
+            services.AddApiConfig();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -31,16 +30,7 @@ namespace WebApiProductsProviders.App
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseApiConfig();
         }
     }
 }
