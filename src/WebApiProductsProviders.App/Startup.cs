@@ -21,6 +21,7 @@ namespace WebApiProductsProviders.App
             services.AddDatabaseConfig(Configuration);
             services.AddDependeces();
             services.AddApiConfig();
+            services.AddSwaggerConfig();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -31,6 +32,7 @@ namespace WebApiProductsProviders.App
             }
 
             app.UseApiConfig();
+            app.UseSwaggerConfig();
         }
     }
 }
