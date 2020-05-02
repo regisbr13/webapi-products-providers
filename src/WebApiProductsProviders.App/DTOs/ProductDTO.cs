@@ -28,7 +28,7 @@ namespace WebApiProductsProviders.App.DTOs
         [Display(Name = "Valor")]
         [Required(ErrorMessage = "o campo {0} é obrigatório")]
         [DataType(DataType.Currency)]
-        [Range(1.0, 1000000.0, ErrorMessage = "não pode ser nulo")]
+        [Range(1.0, 1000000.0, ErrorMessage = "o campo {0} não pode ser nulo")]
         public decimal Value { get; set; }
 
         [Display(Name = "Data de cadastro")]
@@ -38,12 +38,14 @@ namespace WebApiProductsProviders.App.DTOs
         public bool Active { get; set; }
 
         [Display(Name = "Fornecedor")]
-        [Required(ErrorMessage = "faça o cadastro de pelo menos um fornecedor")]
-        public Guid ProviderId { get; set; }
+        //[RegularExpression("^(?!(00000000-0000-0000-0000-000000000000)$)", ErrorMessage = "forneça o Id do {0}")]
+        [Required(ErrorMessage = "forneça o Id do {0} required")]
+        public string ProviderId { get; set; }
 
         [Display(Name = "Categoria")]
-        [Required(ErrorMessage = "faça o cadastro de pelo menos uma categoria")]
-        public Guid CategoryId { get; set; }
+        //[RegularExpression("^(?!(00000000-0000-0000-0000-000000000000)$)", ErrorMessage = "forneça o Id da {0}")]
+        [Required(ErrorMessage = "forneça o Id da {0} required")]
+        public string CategoryId { get; set; }
         public string Provider { get; set; }
         public string Category { get; set; }
     }

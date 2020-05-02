@@ -33,24 +33,26 @@ namespace WebApiProductsProviders.Business.Services
             return await _productRepository.FindByProvider(providerId);
         }
 
-        public async Task Insert(Product product)
+        public async Task<Product> Insert(Product product)
         {
-            if (!ExecuteValidation(new ProductValidation(), product)) return;
+            if (!ExecuteValidation(new ProductValidation(), product)) return null;
 
-            product.Register = DateTime.Now;
+            product.Register = DateTime.UtcNow;
             await _productRepository.Insert(product);
+            return await _productRepository.FindById(product.Id);
+        }
+
+        public async Task<Product> Update(Product product)
+        {
+            if (!ExecuteValidation(new ProductValidation(), product)) return null;
+
+            await _productRepository.Update(product);
+            return await _productRepository.FindById(product.Id);
         }
 
         public async Task Remove(Guid id)
         {
             await _productRepository.Remove(id);
-        }
-
-        public async Task Update(Product product)
-        {
-            if (!ExecuteValidation(new ProductValidation(), product)) return;
-
-            await _productRepository.Update(product);
         }
 
         public void Dispose()

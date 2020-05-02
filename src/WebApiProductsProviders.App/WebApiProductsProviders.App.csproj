@@ -20,5 +20,9 @@
     <ProjectReference Include="..\WebApiProductsProviders.Data\WebApiProductsProviders.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 
 </Project>
