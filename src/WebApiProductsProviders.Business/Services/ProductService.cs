@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Interfaces.Repository;
@@ -18,9 +19,10 @@ namespace WebApiProductsProviders.Business.Services
             _productRepository = productRepository;
         }
 
-        public async Task<List<Product>> FindAll(bool provider, bool category)
+        public async Task<List<Product>> FindAll(bool provider, bool category, int page, int pageSize)
         {
-            return await _productRepository.FindAll(provider, category);
+            var products = (await _productRepository.FindAll(provider, category)).OrderBy(x => x.Name).ToList();
+            return PagedList(page, pageSize, products);
         }
 
         public async Task<Product> FindById(Guid id, bool provider, bool category)

@@ -7,7 +7,7 @@ namespace WebApiProductsProviders.Business.Interfaces.Services
 {
     public interface IProviderService : IDisposable
     {
-        Task<List<Provider>> FindAll(bool address);
+        Task<List<Provider>> FindAll(bool address, int page, int pageSize);
         Task<Provider> FindById(Guid id, bool address, bool product);
         Task<Address> FindAddressById(Guid id);
         Task<Provider> Insert(Provider provider);

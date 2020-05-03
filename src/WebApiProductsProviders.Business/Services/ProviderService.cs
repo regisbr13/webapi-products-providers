@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Interfaces.Repository;
@@ -20,9 +21,10 @@ namespace WebApiProductsProviders.Business.Services
             _addressRepository = addressRepository;
         }
 
-        public async Task<List<Provider>> FindAll(bool address)
+        public async Task<List<Provider>> FindAll(bool address, int page, int pageSize)
         {
-            return await _providerRepository.FindAll(address);
+            var providers = (await _providerRepository.FindAll(address)).OrderBy(x => x.Name).ToList();
+            return PagedList(page, pageSize, providers);
         }
 
         public async Task<Provider> FindById(Guid id, bool address, bool product)

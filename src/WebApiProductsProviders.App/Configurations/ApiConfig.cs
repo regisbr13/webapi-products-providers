@@ -14,6 +14,7 @@ namespace WebApiProductsProviders.App.Configurations
 
         public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app)
         {
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

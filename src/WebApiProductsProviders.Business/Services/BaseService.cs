@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Models;
 using WebApiProductsProviders.Business.Notifications;
@@ -38,6 +37,13 @@ namespace WebApiProductsProviders.Business.Services
 
             Notify(validator);
             return false;
+        }
+
+        protected static List<TE> PagedList<TE>(int page, int pageSize, List<TE> list) where TE : BaseEntity
+        {
+            page = page > 1 ? page - 1 : 0;
+            var skip = page * pageSize;
+            return list.Skip(skip).Take(pageSize).ToList();
         }
     }
 }
