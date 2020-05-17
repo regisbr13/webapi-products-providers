@@ -24,10 +24,10 @@ namespace WebApiProductsProviders.App.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{page:int}/{pageSize:int}")]
+        [HttpGet]
         public async Task<ActionResult<List<ProductDTO>>> Get(int page, int pageSize)
         {
-            var products = _mapper.Map<List<ProductDTO>>(await _productService.FindAll(true, true, page, pageSize));
+            var products = _mapper.Map<List<ProductDTO>>(await _productService.FindAll(true, true));
             return (products);
         }
 

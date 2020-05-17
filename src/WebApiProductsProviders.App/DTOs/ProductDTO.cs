@@ -32,11 +32,11 @@ namespace WebApiProductsProviders.App.DTOs
         public bool Active { get; set; }
 
         [Display(Name = "Fornecedor")]
-        [Required(ErrorMessage = "forneça o Id do {0} required")]
+        [Required(ErrorMessage = "forneça o Id do {0}")]
         public string ProviderId { get; set; }
 
         [Display(Name = "Categoria")]
-        [Required(ErrorMessage = "forneça o Id da {0} required")]
+        [Required(ErrorMessage = "forneça o Id da {0}")]
         public string CategoryId { get; set; }
 
         public string Image { get; set; }

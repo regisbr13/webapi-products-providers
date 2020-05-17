@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace WebApiProductsProviders.Business.Models.Validations.Documents
 {
@@ -9,20 +8,20 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
     {
         public const int TamanhoCpf = 11;
 
-        public static bool Validar(string cpf)
+        public static bool Validate(string cpf)
         {
             var cpfNumeros = Utils.OnlyNumbers(cpf);
 
-            if (!TamanhoValido(cpfNumeros)) return false;
-            return !TemDigitosRepetidos(cpfNumeros) && TemDigitosValidos(cpfNumeros);
+            if (!ValidSize(cpfNumeros)) return false;
+            return !HasRepeatDigits(cpfNumeros) && HasValidDigits(cpfNumeros);
         }
 
-        private static bool TamanhoValido(string valor)
+        private static bool ValidSize(string valor)
         {
             return valor.Length == TamanhoCpf;
         }
 
-        private static bool TemDigitosRepetidos(string valor)
+        private static bool HasRepeatDigits(string valor)
         {
             string[] invalidNumbers =
             {
@@ -40,7 +39,7 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
             return invalidNumbers.Contains(valor);
         }
 
-        private static bool TemDigitosValidos(string valor)
+        private static bool HasValidDigits(string valor)
         {
             var number = valor.Substring(0, TamanhoCpf - 2);
             var digitoVerificador = new DigitoVerificador(number)
@@ -58,20 +57,20 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
     {
         public const int TamanhoCnpj = 14;
 
-        public static bool Validar(string cpnj)
+        public static bool Validate(string cpnj)
         {
             var cnpjNumeros = Utils.OnlyNumbers(cpnj);
 
-            if (!TemTamanhoValido(cnpjNumeros)) return false;
-            return !TemDigitosRepetidos(cnpjNumeros) && TemDigitosValidos(cnpjNumeros);
+            if (!ValidSize(cnpjNumeros)) return false;
+            return !HasRepeatDigits(cnpjNumeros) && HasValidDigits(cnpjNumeros);
         }
 
-        private static bool TemTamanhoValido(string valor)
+        private static bool ValidSize(string valor)
         {
             return valor.Length == TamanhoCnpj;
         }
 
-        private static bool TemDigitosRepetidos(string valor)
+        private static bool HasRepeatDigits(string valor)
         {
             string[] invalidNumbers =
             {
@@ -89,7 +88,7 @@ namespace WebApiProductsProviders.Business.Models.Validations.Documents
             return invalidNumbers.Contains(valor);
         }
 
-        private static bool TemDigitosValidos(string valor)
+        private static bool HasValidDigits(string valor)
         {
             var number = valor.Substring(0, TamanhoCnpj - 2);
 

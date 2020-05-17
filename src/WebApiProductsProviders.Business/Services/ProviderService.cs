@@ -21,10 +21,9 @@ namespace WebApiProductsProviders.Business.Services
             _addressRepository = addressRepository;
         }
 
-        public async Task<List<Provider>> FindAll(bool address, int page, int pageSize)
+        public async Task<List<Provider>> FindAll(bool address)
         {
-            var providers = (await _providerRepository.FindAll(address)).OrderBy(x => x.Name).ToList();
-            return PagedList(page, pageSize, providers);
+            return (await _providerRepository.FindAll(address)).OrderBy(x => x.Name).ToList();
         }
 
         public async Task<Provider> FindById(Guid id, bool address, bool product)

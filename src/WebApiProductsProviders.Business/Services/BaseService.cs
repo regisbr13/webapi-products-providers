@@ -38,12 +38,5 @@ namespace WebApiProductsProviders.Business.Services
             Notify(validator);
             return false;
         }
-
-        protected static List<TE> PagedList<TE>(int page, int pageSize, List<TE> list) where TE : BaseEntity
-        {
-            page = page > 1 ? page - 1 : 0;
-            var skip = page * pageSize;
-            return list.Skip(skip).Take(pageSize).ToList();
-        }
     }
 }

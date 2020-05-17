@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="frontend\" />
   </ItemGroup>
 
 

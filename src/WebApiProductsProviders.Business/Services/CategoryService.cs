@@ -19,10 +19,9 @@ namespace WebApiProductsProviders.Business.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<Category>> FindAll(int page, int pageSize)
+        public async Task<List<Category>> FindAll()
         {
-            var categories = (await _categoryRepository.FindAll()).OrderBy(x => x.Name).ToList();
-            return PagedList(page, pageSize, categories);
+            return (await _categoryRepository.FindAll()).OrderBy(x => x.Name).ToList();
         }
 
         public async Task<Category> FindById(Guid id, bool products)

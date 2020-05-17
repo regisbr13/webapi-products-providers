@@ -14,11 +14,11 @@ namespace WebApiProductsProviders.Business.Models.Validations
 
             When(p => p.ProviderType == ProviderType.LegalPerson, () => {
                 RuleFor(p => p.DocumentNumber.Length).Equal(CnpjValidation.TamanhoCnpj).WithMessage("O campo Cnpj precisa ter {ComparisonValue} caracteres");
-                RuleFor(p => CnpjValidation.Validar(p.DocumentNumber)).Equal(true).WithMessage("O Cnpj fornecido é inválido");
+                RuleFor(p => CnpjValidation.Validate(p.DocumentNumber)).Equal(true).WithMessage("O Cnpj fornecido é inválido");
             });
             When(p => p.ProviderType == ProviderType.PhysicalPerson, () => {
                 RuleFor(p => p.DocumentNumber.Length).Equal(CpfValidation.TamanhoCpf).WithMessage("O campo Cpf precisa ter {ComparisonValue} caracteres");
-                RuleFor(p => CpfValidation.Validar(p.DocumentNumber)).Equal(true).WithMessage("O Cpf fornecido é inválido");
+                RuleFor(p => CpfValidation.Validate(p.DocumentNumber)).Equal(true).WithMessage("O Cpf fornecido é inválido");
             });
         }
     }
