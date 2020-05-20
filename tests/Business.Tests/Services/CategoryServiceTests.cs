@@ -3,10 +3,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Interfaces.Repository;
+using WebApiProductsProviders.Business.Interfaces.Services;
 using WebApiProductsProviders.Business.Models;
-using WebApiProductsProviders.Business.Services;
 using Xunit;
 
 namespace Business.Tests.Services
@@ -15,16 +14,14 @@ namespace Business.Tests.Services
     public class CategoryServiceTests
     {
         private readonly CategoryFixture _categoryTestsFixture;
+        private readonly ICategoryService _categoryService;
         private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
-        private readonly Mock<INotifier> _notifierMock;
-        private readonly CategoryService _categoryService;
 
         public CategoryServiceTests(CategoryFixture categoryTestsFixture)
         {
             _categoryTestsFixture = categoryTestsFixture;
-            _categoryRepositoryMock = new Mock<ICategoryRepository>();
-            _notifierMock = new Mock<INotifier>();
-            _categoryService = new CategoryService(_categoryRepositoryMock.Object, _notifierMock.Object);
+            _categoryService = _categoryTestsFixture.GetCategoryService();
+            _categoryRepositoryMock = _categoryTestsFixture.AutoMocker.GetMock<ICategoryRepository>();
         }
 
         [Fact]
@@ -32,7 +29,7 @@ namespace Business.Tests.Services
         {
             // Arrange
             _categoryRepositoryMock.Setup(r => r.FindAll())
-                .Returns(Task.FromResult(_categoryTestsFixture.GenerateValidCategories()));
+                .Returns(Task.FromResult(_categoryTestsFixture.GetValidCategories()));
 
             // Act
             var categories = await _categoryService.FindAll();
@@ -48,7 +45,7 @@ namespace Business.Tests.Services
             // Arrange
             var categoryId = Guid.NewGuid();
             _categoryRepositoryMock.Setup(r => r.FindById(categoryId, false))
-                .Returns(Task.FromResult(_categoryTestsFixture.GenerateAValidCategory()));
+                .Returns(Task.FromResult(_categoryTestsFixture.GetValidCategory()));
 
             // Act
             var category = await _categoryService.FindById(categoryId, false);
@@ -62,7 +59,7 @@ namespace Business.Tests.Services
         public async void Insert_ShouldInsertAValidCategory()
         {
             // Arrange
-            var category = _categoryTestsFixture.GenerateAValidCategory();
+            var category = _categoryTestsFixture.GetValidCategory();
             _categoryRepositoryMock.Setup(r => r.FindById(category.Id))
                 .Returns(Task.FromResult(category));
 
@@ -79,7 +76,7 @@ namespace Business.Tests.Services
         public async void Insert_ShouldNotInsertAInvalidCategory()
         {
             // Arrange
-            var category = _categoryTestsFixture.GenerateInvalidCategory();
+            var category = _categoryTestsFixture.GetInvalidCategory();
 
             // Act
             var result = await _categoryService.Insert(category);
@@ -93,7 +90,7 @@ namespace Business.Tests.Services
         public async void Update_ShouldUpdateAValidCategory()
         {
             // Arrange
-            var category = _categoryTestsFixture.GenerateAValidCategory();
+            var category = _categoryTestsFixture.GetValidCategory();
             _categoryRepositoryMock.Setup(r => r.FindById(category.Id))
                 .Returns(Task.FromResult(category));
 
@@ -110,7 +107,7 @@ namespace Business.Tests.Services
         public async void Insert_ShouldNotUpdateAInvalidCategory()
         {
             // Arrange
-            var category = _categoryTestsFixture.GenerateInvalidCategory();
+            var category = _categoryTestsFixture.GetInvalidCategory();
 
             // Act
             var result = await _categoryService.Update(category);

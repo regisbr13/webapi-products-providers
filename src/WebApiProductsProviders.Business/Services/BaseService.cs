@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System.Collections.Generic;
-using System.Linq;
 using WebApiProductsProviders.Business.Interfaces;
 using WebApiProductsProviders.Business.Models;
 using WebApiProductsProviders.Business.Notifications;
