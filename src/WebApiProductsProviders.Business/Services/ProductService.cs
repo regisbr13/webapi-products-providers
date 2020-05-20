@@ -21,7 +21,8 @@ namespace WebApiProductsProviders.Business.Services
 
         public async Task<List<Product>> FindAll(bool provider, bool category)
         {
-            return (await _productRepository.FindAll(provider, category)).OrderBy(x => x.Name).ToList();
+            var products = await _productRepository.FindAll(provider, category);
+            return (products).OrderBy(x => x.Name).ToList();
         }
 
         public async Task<Product> FindById(Guid id, bool provider, bool category)

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Business.Tests.Services
 {
-    [Collection(nameof(CategoryFixture))]
+    [Collection("ServicesCollectionTests")]
     public class CategoryServiceTests
     {
         private readonly CategoryFixture _categoryTestsFixture;
@@ -69,7 +69,7 @@ namespace Business.Tests.Services
             // Assert
             _categoryRepositoryMock.Verify(x => x.Insert(category), Times.Once);
             _categoryRepositoryMock.Verify(x => x.FindById(category.Id), Times.Once);
-            Assert.IsType<Category>(result);
+            Assert.Equal(category, result);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Business.Tests.Services
             // Assert
             _categoryRepositoryMock.Verify(x => x.Update(category), Times.Once);
             _categoryRepositoryMock.Verify(x => x.FindById(category.Id), Times.Once);
-            Assert.IsType<Category>(result);
+            Assert.Equal(category, result);
         }
 
         [Fact]
