@@ -7,6 +7,7 @@ using WebApiProductsProviders.Business.Interfaces.Repository;
 using WebApiProductsProviders.Business.Interfaces.Services;
 using WebApiProductsProviders.Business.Models;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Business.Tests.Services
 {
@@ -17,7 +18,7 @@ namespace Business.Tests.Services
         private readonly ICategoryService _categoryService;
         private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
 
-        public CategoryServiceTests(CategoryFixture categoryTestsFixture)
+        public CategoryServiceTests(CategoryFixture categoryTestsFixture, ITestOutputHelper testOutputHelper)
         {
             _categoryTestsFixture = categoryTestsFixture;
             _categoryService = _categoryTestsFixture.GetCategoryService();
@@ -43,16 +44,16 @@ namespace Business.Tests.Services
         public async void FindById_ShouldReturnACategory()
         {
             // Arrange
-            var categoryId = Guid.NewGuid();
-            _categoryRepositoryMock.Setup(r => r.FindById(categoryId, false))
-                .Returns(Task.FromResult(_categoryTestsFixture.GetValidCategory()));
+            var category = _categoryTestsFixture.GetValidCategory();
+            _categoryRepositoryMock.Setup(r => r.FindById(category.Id, false))
+                .Returns(Task.FromResult(category));
 
             // Act
-            var category = await _categoryService.FindById(categoryId, false);
+            var result = await _categoryService.FindById(category.Id, false);
 
             // Assert
-            _categoryRepositoryMock.Verify(x => x.FindById(categoryId, false), Times.Once);
-            Assert.IsType<Category>(category);
+            _categoryRepositoryMock.Verify(x => x.FindById(category.Id, false), Times.Once);
+            Assert.Equal(category, result);
         }
 
         [Fact]

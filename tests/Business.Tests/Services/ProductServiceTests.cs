@@ -30,8 +30,9 @@ namespace Business.Tests.Services
         public async void FindAll_ShouldReturnAListOfProductsWithoutItsProvidersAndCategories()
         {
             // Arrange
+            var products = _productTestsFixture.GetValidProducts(false);
             _productRepositoryMock.Setup(r => r.FindAll(false, false))
-                .Returns(Task.FromResult(_productTestsFixture.GetValidProducts(false)));
+                .Returns(Task.FromResult(products));
 
             // Act
             var result = await _productService.FindAll(false, false);
@@ -39,7 +40,7 @@ namespace Business.Tests.Services
             // Assert
 
             _productRepositoryMock.Verify(x => x.FindAll(false, false), Times.Once);
-            result.Should().BeOfType(typeof(List<Product>));
+            result.Should().BeEquivalentTo(products);
             result.ForEach(x => x.Category.Should().BeNull());
             result.ForEach(x => x.Provider.Should().BeNull());
         }
@@ -48,8 +49,9 @@ namespace Business.Tests.Services
         public async void FindAll_ShouldReturnAListOfProductsWithItsProvidersAndCategories()
         {
             // Arrange
+            var products = _productTestsFixture.GetValidProducts(true);
             _productRepositoryMock.Setup(r => r.FindAll(true, true))
-                .Returns(Task.FromResult(_productTestsFixture.GetValidProducts(true)));
+                .Returns(Task.FromResult(products));
 
             // Act
             var result = await _productService.FindAll(true, true);
@@ -57,25 +59,25 @@ namespace Business.Tests.Services
             // Assert
 
             _productRepositoryMock.Verify(x => x.FindAll(true, true), Times.Once);
-            result.Should().BeOfType(typeof(List<Product>));
+            result.Should().BeEquivalentTo(products);
             result.ForEach(x => x.Category.Should().NotBeNull());
-            //result.ForEach(x => x.Provider.Should().NotBeNull());
+            result.ForEach(x => x.Provider.Should().NotBeNull());
         }
 
         [Fact]
         public async void FindById_ShouldReturnAProduct()
         {
             // Arrange
-            var productId = Guid.NewGuid();
-            _productRepositoryMock.Setup(r => r.FindById(productId, true, true))
-                .Returns(Task.FromResult(_productTestsFixture.GetValidProduct()));
+            var product = _productTestsFixture.GetValidProduct();
+            _productRepositoryMock.Setup(r => r.FindById(product.Id, true, true))
+                .Returns(Task.FromResult(product));
 
             // Act
-            var result = await _productService.FindById(productId, true, true);
+            var result = await _productService.FindById(product.Id, true, true);
 
             // Assert
-            _productRepositoryMock.Verify(x => x.FindById(productId, true, true), Times.Once);
-            result.Should().BeOfType(typeof(Product));
+            _productRepositoryMock.Verify(x => x.FindById(product.Id, true, true), Times.Once);
+            result.Should().BeEquivalentTo(product);
         }
 
         [Fact]
@@ -83,15 +85,16 @@ namespace Business.Tests.Services
         {
             // Arrange
             var providerId = Guid.NewGuid();
+            var products = _productTestsFixture.GetValidProducts();
             _productRepositoryMock.Setup(r => r.FindByProvider(providerId))
-                .Returns(Task.FromResult(_productTestsFixture.GetValidProducts()));
+                .Returns(Task.FromResult(products));
 
             // Act
             var result = await _productService.FindByProvider(providerId);
 
             // Assert
             _productRepositoryMock.Verify(x => x.FindByProvider(providerId), Times.Once);
-            result.Should().BeOfType(typeof(List<Product>));
+            result.Should().BeEquivalentTo(products);
         }
 
         [Fact]

@@ -24,12 +24,13 @@ namespace Business.Tests.Fixtures
                     Active = f.Random.Bool(),
                     Value = (decimal)f.Random.Double(1.0, 1000000.0),
                     Register = f.Date.Past(),
-                    Category = new CategoryFixture().GetValidCategory(),
-                    Provider = null
+                    Category = new Faker<Category>(),
+                    Provider = new Faker<Provider>()
                 });
             products.RuleFor(x => x.CategoryId, (f, p) => p.Category.Id);
+            products.RuleFor(x => x.ProviderId, (f, p) => p.Provider.Id);
 
-            if(!productsAndCategories)
+            if (!productsAndCategories)
             {
                 products.RuleFor(x => x.Category, f => null);
                 products.RuleFor(x => x.Provider, f => null);

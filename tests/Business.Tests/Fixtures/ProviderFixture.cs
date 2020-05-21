@@ -16,7 +16,6 @@ namespace Business.Tests.Fixtures
 
         public List<Provider> GetValidProviders()
         {
-            var productFixture = new ProductFixture();
             var providers = new Faker<Provider>("pt_BR")
                 .CustomInstantiator(f => new Provider()
                 {
@@ -24,7 +23,7 @@ namespace Business.Tests.Fixtures
                     Name = f.Company.CompanyName(),
                     Active = f.Random.Bool(),
                     DocumentNumber = f.Random.Bool() ? f.Company.Cnpj() : f.Person.Cpf(),
-                    Products = productFixture.GetValidProducts(false)
+                    Products = new Faker<List<Product>>()
                 });
             providers.RuleFor(p => p.Address, (f, p) => GetAddress(p.Id));
             providers.RuleFor(p => p.ProviderType, (f, p) => p.DocumentNumber.Length.Equals(18) ? ProviderType.LegalPerson : ProviderType.PhysicalPerson);

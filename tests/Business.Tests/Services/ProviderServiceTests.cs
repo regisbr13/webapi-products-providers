@@ -19,9 +19,9 @@ namespace Business.Tests.Services
         private readonly Mock<IProviderRepository> _providerRepositoryMock;
         private readonly Mock<IAddressRepository> _addressRepositoryMock;
 
-        public ProviderServiceTests(ProviderFixture productTestsFixture)
+        public ProviderServiceTests(ProviderFixture providerTestsFixture)
         {
-            _providerTestsFixture = productTestsFixture;
+            _providerTestsFixture = providerTestsFixture;
             _providerService = _providerTestsFixture.GetProviderService();
             _providerRepositoryMock = _providerTestsFixture.AutoMocker.GetMock<IProviderRepository>();
             _addressRepositoryMock = _providerTestsFixture.AutoMocker.GetMock<IAddressRepository>();
@@ -31,8 +31,9 @@ namespace Business.Tests.Services
         public async void FindAll_ShouldReturnAListOfProvidersWithItsAddress()
         {
             // Arrange
+            var providers = _providerTestsFixture.GetValidProviders();
             _providerRepositoryMock.Setup(r => r.FindAll(true))
-                .Returns(Task.FromResult(_providerTestsFixture.GetValidProviders()));
+                .Returns(Task.FromResult(providers));
 
             // Act
             var result = await _providerService.FindAll(true);
@@ -40,7 +41,7 @@ namespace Business.Tests.Services
             // Assert
 
             _providerRepositoryMock.Verify(x => x.FindAll(true), Times.Once);
-            result.Should().BeOfType(typeof(List<Provider>));
+            result.Should().BeEquivalentTo(providers);
             result.ForEach(x => x.Address.Should().NotBeNull());
         }
 
@@ -48,16 +49,15 @@ namespace Business.Tests.Services
         public async void FindById_ShouldReturnAProvider()
         {
             // Arrange
-            var productId = Guid.NewGuid();
             var provider = _providerTestsFixture.GetValidProvider();
-            _providerRepositoryMock.Setup(r => r.FindById(productId, true, true))
+            _providerRepositoryMock.Setup(r => r.FindById(provider.Id, true, true))
                 .Returns(Task.FromResult(provider));
 
             // Act
-            var result = await _providerService.FindById(productId, true, true);
+            var result = await _providerService.FindById(provider.Id, true, true);
 
             // Assert
-            _providerRepositoryMock.Verify(x => x.FindById(productId, true, true), Times.Once);
+            _providerRepositoryMock.Verify(x => x.FindById(provider.Id, true, true), Times.Once);
             result.Should().BeEquivalentTo(provider);
         }
 
@@ -65,16 +65,16 @@ namespace Business.Tests.Services
         public async void FindAddressById_ShouldReturnAnAddress()
         {
             // Arrange
-            var productId = Guid.NewGuid();
-            _addressRepositoryMock.Setup(r => r.FindById(productId))
-                .Returns(Task.FromResult(_providerTestsFixture.GetAddress(productId)));
+            var address = _providerTestsFixture.GetAddress(Guid.NewGuid());
+            _addressRepositoryMock.Setup(r => r.FindById(address.ProviderId))
+                .Returns(Task.FromResult(address));
 
             // Act
-            var result = await _providerService.FindAddressById(productId);
+            var result = await _providerService.FindAddressById(address.ProviderId);
 
             // Assert
-            _addressRepositoryMock.Verify(x => x.FindById(productId), Times.Once);
-            result.Should().BeOfType(typeof(Address));
+            _addressRepositoryMock.Verify(x => x.FindById(address.ProviderId), Times.Once);
+            result.Should().BeEquivalentTo(address);
         }
 
         [Fact]
@@ -117,18 +117,18 @@ namespace Business.Tests.Services
         public async void Insert_ShouldNotInsertAInvalidProvider()
         {
             // Arrange
-            var product = _providerTestsFixture.GetInvalidProvider();
+            var provider = _providerTestsFixture.GetInvalidProvider();
 
             // Act
-            var result = await _providerService.Insert(product);
+            var result = await _providerService.Insert(provider);
 
             // Assert
-            _providerRepositoryMock.Verify(x => x.Insert(product), Times.Never);
+            _providerRepositoryMock.Verify(x => x.Insert(provider), Times.Never);
             result.Should().BeNull();
         }
 
         [Fact]
-        public async void Update_ShouldUpdateAValidProduct()
+        public async void Update_ShouldUpdateAValidProvider()
         {
             // Arrange
             var provider = _providerTestsFixture.GetValidProvider();

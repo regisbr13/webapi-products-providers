@@ -14,7 +14,12 @@ namespace Business.Tests.Fixtures
 
         public List<Category> GetValidCategories()
         {
-            var categories = new Faker<Category>("pt_BR");
+            var categories = new Faker<Category>("pt_BR")
+                .CustomInstantiator(f => new Category()
+                {
+                    Id = Guid.NewGuid(),
+                    Products = new Faker<List<Product>>()
+                });
             categories.RuleFor(x => x.Name, f => f.Commerce.Categories(50).Take(1).FirstOrDefault());
 
             return categories.Generate(10);
