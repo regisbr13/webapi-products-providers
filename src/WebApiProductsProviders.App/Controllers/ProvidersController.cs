@@ -81,7 +81,7 @@ namespace WebApiProductsProviders.App.Controllers
                 return CustomResponse();
             }
 
-            var provider = await _providerService.Insert(_mapper.Map<Provider>(providerDTO));
+            var provider = await _providerService.Update(_mapper.Map<Provider>(providerDTO));
             return CustomResponse(_mapper.Map<ProviderDTO>(provider));
         }
 

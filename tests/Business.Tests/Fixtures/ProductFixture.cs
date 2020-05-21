@@ -45,20 +45,11 @@ namespace Business.Tests.Fixtures
 
         public Product GetInvalidProduct()
         {
-            var product = new Faker<Product>("pt_BR")
-               .CustomInstantiator(f => new Product()
-               {
-                   Id = Guid.NewGuid(),
-                   Name = f.Commerce.ProductName(),
-                   Description = string.Empty,
-                   Image = f.Internet.Avatar(),
-                   Active = f.Random.Bool(),
-                   Value = (decimal)f.Random.Double(0.0, 1.0),
-                   Register = f.Date.Past(),
-                   Category = new CategoryFixture().GetValidCategory(),
-                   Provider = null
-               });
-            product.RuleFor(x => x.CategoryId, (f, p) => p.Category.Id);
+            var product = GetValidProduct();
+            var faker = new Faker();
+            product.Name = faker.Random.Bool() ? product.Name.Substring(0, 1) : string.Empty;
+            product.Description = faker.Random.Bool() ? product.Description.Substring(0, 1) : string.Empty;
+            product.Value = faker.Random.Bool() ? 0 : (decimal)faker.Random.Double(1, 10000);
 
             return product;
         }

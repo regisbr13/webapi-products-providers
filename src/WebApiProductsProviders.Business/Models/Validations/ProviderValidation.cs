@@ -10,7 +10,7 @@ namespace WebApiProductsProviders.Business.Models.Validations
         {
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("O campo Nome não pode ser vazio")
-                .Length(3, 100).WithMessage("O campo Nome precisa ter entre {MinLength} e {MaxLength} caracteres");
+                .Length(3, 100).WithMessage("O campo Nome precisa ter de {MinLength} a {MaxLength} caracteres");
 
             When(p => p.ProviderType == ProviderType.LegalPerson, () => {
                 RuleFor(p => p.DocumentNumber.Length).Equal(CnpjValidation.TamanhoCnpj).WithMessage("O campo Cnpj precisa ter {ComparisonValue} caracteres");

@@ -27,8 +27,8 @@ namespace Business.Tests.Fixtures
 
         public Category GetInvalidCategory()
         {
-            var category = new Faker<Category>("pt_BR");
-            category.RuleFor(x => x.Name, f => string.Empty);
+            var category = GetValidCategory();
+            category.Name = new Faker().Random.Bool() ? string.Empty : category.Name.Substring(0, 1);
 
             return category;
         }

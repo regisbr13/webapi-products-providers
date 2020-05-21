@@ -42,8 +42,6 @@ namespace Business.Tests.Services
             result.Should().BeOfType(typeof(List<Product>));
             result.ForEach(x => x.Category.Should().BeNull());
             result.ForEach(x => x.Provider.Should().BeNull());
-            _productService.ExecutionTimeOf(x => x.FindAll(false, false))
-                .Should().BeLessThan(10.Milliseconds());
         }
 
         [Fact]
@@ -81,6 +79,22 @@ namespace Business.Tests.Services
         }
 
         [Fact]
+        public async void FindByProvider_ShouldReturnAListOfProducts()
+        {
+            // Arrange
+            var providerId = Guid.NewGuid();
+            _productRepositoryMock.Setup(r => r.FindByProvider(providerId))
+                .Returns(Task.FromResult(_productTestsFixture.GetValidProducts()));
+
+            // Act
+            var result = await _productService.FindByProvider(providerId);
+
+            // Assert
+            _productRepositoryMock.Verify(x => x.FindByProvider(providerId), Times.Once);
+            result.Should().BeOfType(typeof(List<Product>));
+        }
+
+        [Fact]
         public async void Insert_ShouldInsertAValidProduct()
         {
             // Arrange
@@ -98,16 +112,16 @@ namespace Business.Tests.Services
         }
 
         [Fact]
-        public async void Insert_ShouldNotInsertAInvalidCategory()
+        public async void Insert_ShouldNotInsertAInvalidProduct()
         {
             // Arrange
-            var category = _productTestsFixture.GetInvalidProduct();
+            var product = _productTestsFixture.GetInvalidProduct();
 
             // Act
-            var result = await _productService.Insert(category);
+            var result = await _productService.Insert(product);
 
             // Assert
-            _productRepositoryMock.Verify(x => x.Insert(category), Times.Never);
+            _productRepositoryMock.Verify(x => x.Insert(product), Times.Never);
             result.Should().BeNull();
         }
 
