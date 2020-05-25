@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\WebApiProductsProviders.Business\WebApiProductsProviders.Business.csproj" />
-    <ProjectReference Include="..\..\src\WebApiProductsProviders.Data\WebApiProductsProviders.Data.csproj" />
   </ItemGroup>
 
 </Project>
